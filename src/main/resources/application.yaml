@@ -1,0 +1,38 @@
+server:
+  port: ${PORT:8080}
+  url: ${SERVER_URL:http://localhost:8080}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:sqlserver://localhost:1433;databaseName=agroTecno_db}
+    username: ${DATABASE_USERNAME:sa}
+    password: ${DATABASE_PASSWORD:Admin12345}
+    driver-class-name: ${DATABASE_DRIVER:com.microsoft.sqlserver.jdbc.SQLServerDriver}
+
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC  # Cambiado a UTC para que coincida con la BD
+        format_sql: true
+  
+  jackson:
+    time-zone: America/Lima  # Para que la API muestre las fechas en hora Lima
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: true
+    default-property-inclusion: non_null
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: method
