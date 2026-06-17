@@ -31,17 +31,17 @@ jobs:
         run: mvn clean compile -DskipTests
 
       # 🔥 Trivy versión estable (NO uses la 0.36)
-      - name: Run Trivy Scan
-        uses: aquasecurity/trivy-action@0.19.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          format: table
-          scanners: vuln
-          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-          ignore-unfixed: true
-          hide-progress: true
-          exit-code: "0"
+      - - name: Run Trivy Filesystem Scan
+          uses: aquasecurity/trivy-action@0.36.0
+          with:
+            scan-type: fs
+            scan-ref: .
+            format: table
+            scanners: vuln
+            severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+            ignore-unfixed: true
+            hide-progress: true
+            exit-code: "0"
 
       - name: Finish
         run: echo "Pipeline OK"
