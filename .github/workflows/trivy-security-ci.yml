@@ -9,19 +9,13 @@ on:
     branches:
       - main
       - develop
-  schedule:
-    # Ejecutar todos los días a las 8:00 AM hora Perú (UTC-5) → 1:00 PM UTC
-    - cron: '0 13 * * *'
-  workflow_dispatch:  # Permite ejecución manual desde GitHub Actions UI
+  workflow_dispatch:
 
 jobs:
-
   trivy-security:
-    name: Trivy Filesystem Scan
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -32,23 +26,20 @@ jobs:
           java-version: 25
           cache: maven
 
-      - name: Make Maven Wrapper executable
-        run: chmod +x mvnw
-
       - name: Build Project
-        run: ./mvnw clean compile -DskipTests
+        run: mvn clean compile -DskipTests
 
       - name: Run Trivy Filesystem Scan
-        uses: aquasecurity/trivy-action@v0.19.0
+        uses: aquasecurity/trivy-action@0.19.0
         with:
           scan-type: fs
           scan-ref: .
           format: table
-          hide-progress: true
           scanners: vuln
-          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          hide-progress: true
           ignore-unfixed: true
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           exit-code: '0'
 
       - name: Pipeline Finished
-        run: echo "Trivy scan completed successfully"
+        run: echo "Trivy scan completed"
