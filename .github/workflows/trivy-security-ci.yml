@@ -2,13 +2,9 @@ name: Trivy Security Scan
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   workflow_dispatch:
 
 jobs:
@@ -24,10 +20,12 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-          cache: maven
+
+      - name: Make Maven Wrapper executable
+        run: chmod +x mvnw
 
       - name: Build Project
-        run: mvn clean compile -DskipTests
+        run: ./mvnw -B clean compile -DskipTests
 
       - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@0.28.0
