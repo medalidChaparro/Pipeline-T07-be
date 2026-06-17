@@ -2,15 +2,20 @@ name: Trivy Security Scan
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   schedule:
     - cron: '0 13 * * *'
   workflow_dispatch:
 
 jobs:
   trivy-security:
+    name: Trivy Filesystem Scan
     runs-on: ubuntu-latest
 
     steps:
@@ -24,12 +29,11 @@ jobs:
           java-version: 25
           cache: maven
 
-      # 🔥 CAMBIO CLAVE
       - name: Build Project
         run: mvn clean compile -DskipTests
 
       - name: Run Trivy Filesystem Scan
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
           scan-ref: .
