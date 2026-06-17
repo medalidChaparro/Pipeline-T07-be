@@ -33,7 +33,7 @@ jobs:
           cache: maven
 
       - name: Build Project
-        run: mvn clean package -DskipTests
+        run: mvn clean compile -DskipTests
 
       - name: Run Trivy Filesystem Scan
         uses: aquasecurity/trivy-action@v0.36.0
