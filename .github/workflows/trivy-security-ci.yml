@@ -4,45 +4,45 @@ on:
   push:
     branches:
       - main
-      - develop
+      - develop # puedes añadir más ramas
   pull_request:
     branches:
       - main
-      - develop
-  workflow_dispatch:
+      - develop # puedes añadir más ramas
+  schedule:
+    # Ejecutar todos los días a las 8:00 AM hora Perú (UTC-5) → 1:00 PM UTC
+    - cron: '0 13 * * *'
+  workflow_dispatch:  # Permite ejecución manual desde GitHub Actions UI
 
 jobs:
+
   trivy-security:
+    name: Trivy Filesystem Scan
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # ✅ JAVA 17 (ESTO ES LO QUE TE PIDEN AHORA)
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 25
           cache: maven
 
-      # ✅ Build igual al profesor
       - name: Build Project
-        run: mvn clean compile -DskipTests
+        run: mvn clean package -DskipTests
 
-      # ✅ TRIVY ESTABLE (la versión que NO falla)
       - name: Run Trivy Filesystem Scan
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          scan-type: fs
-          scan-ref: .
-          format: table
-          scanners: vuln
-          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
           ignore-unfixed: true
-          hide-progress: true
-          exit-code: "0"
+          exit-code: '0' # 0: No Falla por vulnerabilidades | 1: Falla por vulnerabilidades
 
       - name: Pipeline Finished
         run: echo "Trivy scan completed successfully"
