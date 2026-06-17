@@ -36,10 +36,10 @@ jobs:
           scan-ref: .
           format: table
           scanners: vuln
-          hide-progress: true
-          ignore-unfixed: true
           severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-          exit-code: '0'
+          ignore-unfixed: true
+          hide-progress: true
+          exit-code: "0"
 
       - name: Pipeline Finished
-        run: echo "Trivy scan completed"
+        run: echo "Trivy scan completed successfully"
