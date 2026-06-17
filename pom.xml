@@ -5,6 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- SPRING BOOT (usar versión estable compatible) -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,11 +19,17 @@
 
     <properties>
         <java.version>25</java.version>
+
+        <!-- FIX IMPORTANTE PARA TOMCAT -->
+        <tomcat.version>10.1.55</tomcat.version>
+
+        <!-- FIX LIBRERÍAS TRANSITIVAS -->
+        <commons-lang3.version>3.18.0</commons-lang3.version>
     </properties>
 
     <dependencies>
 
-        <!-- SPRING WEB -->
+        <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -61,6 +68,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- FIX DIRECTO PARA CVE commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
         <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,13 +87,13 @@
     <build>
         <plugins>
 
-            <!-- SPRING BOOT PLUGIN -->
+            <!-- SPRING BOOT -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- COMPILER -->
+            <!-- COMPILER FIXADO -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
