@@ -9,30 +9,27 @@ on:
     branches:
       - main
       - develop
-  schedule:
-    - cron: '0 13 * * *'
   workflow_dispatch:
 
 jobs:
   trivy-security:
-    name: Trivy Filesystem Scan
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 25
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 25
+          java-version: 17
           cache: maven
 
       - name: Build Project
         run: mvn clean compile -DskipTests
 
-      - name: Run Trivy Filesystem Scan
+      - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
@@ -41,5 +38,5 @@ jobs:
           ignore-unfixed: true
           exit-code: '0'
 
-      - name: Pipeline Finished
-        run: echo "Trivy scan completed successfully"
+      - name: Done
+        run: echo "OK"
